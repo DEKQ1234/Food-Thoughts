@@ -63,18 +63,6 @@
 /******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
-<<<<<<< HEAD
-/******/ ({
-
-/***/ 29:
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: SyntaxError: /Users/Eric/Desktop/hrla19/Project1/package.json: Error while parsing JSON - Unexpected end of JSON input\n    at JSON.parse (<anonymous>)\n    at ConfigChainBuilder.addConfig (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-core/lib/transformation/file/options/build-config-chain.js:150:65)\n    at ConfigChainBuilder.findConfigs (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-core/lib/transformation/file/options/build-config-chain.js:102:30)\n    at buildConfigChain (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-core/lib/transformation/file/options/build-config-chain.js:61:13)\n    at OptionManager.init (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-core/lib/transformation/file/options/option-manager.js:354:58)\n    at File.initOptions (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-core/lib/transformation/file/index.js:212:65)\n    at new File (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-core/lib/transformation/file/index.js:135:24)\n    at Pipeline.transform (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-core/lib/transformation/pipeline.js:46:16)\n    at transpile (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-loader/lib/index.js:50:20)\n    at Object.module.exports (/Users/Eric/Desktop/hrla19/Project1/node_modules/babel-loader/lib/index.js:175:20)");
-
-/***/ })
-
-/******/ });
-=======
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
@@ -1967,7 +1955,7 @@ var _app = __webpack_require__(69);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _index = __webpack_require__(71);
+var _index = __webpack_require__(72);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -21199,19 +21187,21 @@ var _restaurantList = __webpack_require__(70);
 
 var _restaurantList2 = _interopRequireDefault(_restaurantList);
 
+var _restaurant = __webpack_require__(76);
+
+var _restaurant2 = _interopRequireDefault(_restaurant);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//add list to App div
-//layout for app
 var App = function App() {
   return _react2.default.createElement(
     'div',
     null,
     'App div',
-    _react2.default.createElement(_restaurantList2.default, null)
+    _react2.default.createElement(_restaurantList2.default, null),
+    _react2.default.createElement(_restaurant2.default, null)
   );
-};
-
+}; //layout for app
 exports.default = App;
 
 /***/ }),
@@ -21235,6 +21225,8 @@ var _redux = __webpack_require__(7);
 
 var _reactRedux = __webpack_require__(23);
 
+var _index = __webpack_require__(75);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21255,12 +21247,38 @@ var List = function (_Component) {
     _createClass(List, [{
         key: 'renderListItem',
         value: function renderListItem() {
+            var _this2 = this;
+
             console.log(this.props.restuarants);
             return this.props.restaurants.map(function (restaurant) {
                 return _react2.default.createElement(
-                    'li',
-                    { key: restaurant.id },
-                    restaurant.name
+                    'div',
+                    { className: 'ListEntry',
+                        key: restaurant.id,
+                        onClick: function onClick() {
+                            return _this2.props.selectRestaurant(restaurant);
+                        }
+                    },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'ListEntryImage' },
+                        _react2.default.createElement('img', { 'class': 'resImg', src: restaurant.image })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'ListEntryInfo' },
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            restaurant.name,
+                            ' '
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            restaurant.address
+                        )
+                    )
                 );
             });
         }
@@ -21283,13 +21301,19 @@ var List = function (_Component) {
 
 
 function mapStateToProps(state) {
-    return { restaurants: state.restaurants };
+    return { restaurants: state.restaurants
+    };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(List);
+function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({ selectRestaurant: _index.selectRestaurant }, dispatch);
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(List);
 
 /***/ }),
-/* 71 */
+/* 71 */,
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21301,11 +21325,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(7);
 
-var _restaurantsreducer = __webpack_require__(72);
+var _restaurantsreducer = __webpack_require__(73);
 
 var _restaurantsreducer2 = _interopRequireDefault(_restaurantsreducer);
 
-var _active_restaurantreducer = __webpack_require__(73);
+var _active_restaurantreducer = __webpack_require__(74);
 
 var _active_restaurantreducer2 = _interopRequireDefault(_active_restaurantreducer);
 
@@ -21319,7 +21343,7 @@ var allreducers = (0, _redux.combineReducers)({
 exports.default = allreducers;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21334,22 +21358,25 @@ exports.default = function () {
     id: 1,
     name: 'mickeyDees',
     address: '333 Big MACKK Dr.',
-    phone: '310-342-5436'
+    phone: '310-342-5436',
+    image: 'https://pbs.twimg.com/profile_images/658746945565954048/Zrf2h3RD_400x400.jpg'
   }, {
     id: 2,
     name: 'Tacko Bayl',
     address: '333 CrunchWrapp Dr.',
-    phone: '310-656-6654'
+    phone: '310-656-6654',
+    image: 'https://pbs.twimg.com/profile_images/918972315991384064/qwetpLdA.jpg'
   }, {
     id: 3,
     name: 'Jack in the Crack',
     address: '333 YumboYack Dr.',
-    phone: '310-333-3333'
+    phone: '310-333-3333',
+    image: 'https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/Jack_in_the_Box_2009_logo.svg/1071px-Jack_in_the_Box_2009_logo.svg.png'
   }];
 };
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21360,9 +21387,126 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function () {
-  {}
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'RESTAURANT_SELECTED':
+      return action.payload;
+      break;
+  }
+  return state;
 };
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var selectRestaurant = exports.selectRestaurant = function selectRestaurant(restaurant) {
+  console.log('hello', restaurant);
+  return {
+    type: "RESTAURANT_SELECTED",
+    payload: restaurant
+  };
+};
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(7);
+
+var _reactRedux = __webpack_require__(23);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Restaurant = function (_Component) {
+  _inherits(Restaurant, _Component);
+
+  function Restaurant() {
+    _classCallCheck(this, Restaurant);
+
+    return _possibleConstructorReturn(this, (Restaurant.__proto__ || Object.getPrototypeOf(Restaurant)).apply(this, arguments));
+  }
+
+  _createClass(Restaurant, [{
+    key: 'render',
+    value: function render() {
+      if (!this.props.active_restaurant) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          'pick restuarant'
+        );
+      }
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement('img', { src: this.props.active_restaurant.image }),
+        _react2.default.createElement(
+          'h2',
+          { align: 'right' },
+          this.props.active_restaurant.name
+        ),
+        _react2.default.createElement(
+          'h4',
+          { align: 'right' },
+          this.props.active_restaurant.address
+        ),
+        _react2.default.createElement(
+          'h4',
+          { align: 'right' },
+          this.props.active_restaurant.phone
+        ),
+        _react2.default.createElement(
+          'button',
+          { align: 'right' },
+          'Add Review'
+        )
+      );
+    }
+  }]);
+
+  return Restaurant;
+}(_react.Component);
+
+function mapStateToProps(state) {
+
+  return {
+    active_restaurant: state.active_restaurant
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({ addReview: addReview }, dispatch);
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Restaurant);
 
 /***/ })
 /******/ ]);
->>>>>>> dev

@@ -46,35 +46,35 @@ class User extends Component {
     console.log('inside of renderCondition, this is this.props.userReviews', this.props.userReviews)
     
     if(this.props.userReviews) {
-    //  if( this.props.userReviews.length <= 0 ){
-    //     //if no reviews
-    //   return (
-    //     <div> Looks like you have no food thoughts. <br/> Search for a restaurant to submit your thoughts... </div> 
-    //   )
-    // } else {
-      //if they have reviews
       return (
-        <ul>
+        <ul className="list-group" >
           {
             this.props.userReviews.slice(0).reverse().map(review => {
-              
-              return (<li key={review.restaurantid}>
-                <div> 
-                  {review.restaurantid}
-                </div>
-                <div> 
-                  {review.rating}
-                  {review.comment}
-                </div>
-              
-              </li>)
+              return (
+                <li className="list-group-item" key={review.restaurantid}>
+                  <div> 
+                    <h6>
+                      {review.restaurantid}
+                    </h6>
+                    <hr/>
+                  </div>
+                  <div>
+                    <div className="col-sm-2" >
+                      <h6>Rating</h6>{review.rating}
+                    </div>
+                    <div className="offset-3 col-sm-7" style={{marginTop: '-25px', paddingBottom: '15px'}}>
+                      {review.comment}
+                    </div>
+                  </div>
+                </li>
+              )
 
             })
           }
 
         </ul>
       )
-    }else{
+    } else {
       return (
         <div> Looks like you have no food thoughts. <br/> Search for a restaurant to submit your thoughts... </div> 
       )
@@ -174,6 +174,7 @@ class User extends Component {
           <div className="col-sm-6 float-right">
             <div className="text-center">
               <h4>Reviews</h4>
+              <hr/>
               {this.renderCondition()}
             </div>
           </div>
